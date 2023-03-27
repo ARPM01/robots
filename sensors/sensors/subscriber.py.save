@@ -1,0 +1,69 @@
+import rclpy
+import time
+import datetime
+import numpy as np
+
+from rclpy.node import Node
+from sensor_msgs.msg import Imu, BatteryState
+from sensor_msgs.msg import LaserScan
+from rclpy.qos import qos_profile_sensor_data
+
+class TimerNode(Node):
+    def __init__(self):
+        super().__init__('timer_node')
+
+        self.set_params()
+        self.get_params()
+        self.timer = self.create_timer(self.hz, self.timer_callback)
+
+    def set_params(self):
+        self.declare_parameter('hz', 1)
+
+    def get_params(self):
+        self.hz = self.get_parameter('hz').get_parameter_value().integer_value
+
+    def timer_callback(self):
+        self.get_logger().info(str(datetime.datetime.now()))
+
+class SensorsSubscriber(Node):
+	def __init__(self):
+		super().__init__('sensors_subscriber')
+
+		self.scan_ranges = []
+		self.init_scan_state = False
+
+		self.create_subscription(Imu, 'imu', self.imu_callback, qos_profile=qos_profile_sensor_data)
+		self.create_subscription(BatteryState, 'battery_state', self.battery_callback, qos_profile=qos_profile_sensor_data)
+		self.create_subscription(LaserScan, 'scan', self.scan_callback, qos_profile=qos_profile_sensor_data)
+		self.imu_count = 0
+
+	def imu_callback(self, msg):
+		msg = Imu()
+                self.get_logger().info(msg.)
+
+	def battery_callback(self, msg):
+		msg = BatteryState()
+    		msg.voltage = self.battery_voltage
+    		msg.percentage = self.percent_charge_level
+		self.get_logger().info(msg)
+
+	def scan_callback(self, msg):
+		msg = LaserScan()
+    		msg.min = self.range_min
+    		msg.max = self.range_max
+		self.get_logger().info(msg)
+def main(args=None):
+    rclpy.init(args=args)
+    #timer_node = TimerNode()
+    subscriber_node = SensorsSubscriber()
+
+    #rclpy.spin(timer_node)
+    rclpy.spin(subscriber_node)
+
+    #timer_node.destroy_node()
+    subscriber_node.destroy_node()
+
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()

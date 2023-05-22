@@ -23,6 +23,8 @@ setup(
 		'subscriber = sensors.subscriber:main',
 		'sensors = sensors.sensors:main',
 		'timer_node = sensors.timer_node:main',
+                'camera_publisher_node = sensors.camera_publisher_node:main',
+                'camera_subscriber_node = sensors.camera_subscriber_node:main',
         ],
     },
 )

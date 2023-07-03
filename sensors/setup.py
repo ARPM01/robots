@@ -25,6 +25,9 @@ setup(
 		'timer_node = sensors.timer_node:main',
                 'camera_publisher_node = sensors.camera_publisher_node:main',
                 'camera_subscriber_node = sensors.camera_subscriber_node:main',
+                'motion = sensors.motion:main',
+                'clientcopy = sensors.clientcopy:main',
+                'client = sensors.client:main',
         ],
     },
 )

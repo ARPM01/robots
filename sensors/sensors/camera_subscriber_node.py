@@ -19,7 +19,8 @@ class CameraSubscriberNode(Node):
     def image_callback(self, msg):
         bridge = CvBridge()
         frame = bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        filename = f'frame_{self.frame_counter}.jpg'
+        frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+        filename = f'img_dump/frame_{self.frame_counter}.jpg'
         cv2.imwrite(filename, frame)
         self.frame_counter += 1
         #cv2.imshow('Camera Feed', frame)
